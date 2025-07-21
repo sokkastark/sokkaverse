@@ -1,0 +1,164 @@
+/* Reset body and set background */
+body {
+  margin: 0;
+  font-family: 'Courier New', monospace;
+  background-color: #0d0d0d;
+  color: #00ff66;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden; /* Prevent body scroll if content temporarily overfills */
+}
+
+/* Terminal container */
+.terminal {
+  width: 90%;
+  max-width: 800px;
+  min-height: 350px; /* Set a minimum height to prevent jumps */
+  background-color: #000;
+  padding: 2rem;
+  border: 2px solid #00ff66;
+  box-shadow: 0 0 20px #00ff66;
+  border-radius: 12px;
+  font-family: 'Courier New', monospace;
+  color: #00ff66;
+  user-select: none;
+  display: flex; /* Use flexbox to stack content vertically */
+  flex-direction: column;
+  justify-content: flex-start; /* Align content to the top */
+}
+
+/* Consistent styling for each animated line */
+.terminal-line {
+  margin-bottom: 1rem; /* Space between lines */
+  font-size: 1.1rem;
+  white-space: pre-wrap; /* Preserve whitespace and allow wrapping */
+  height: 1.1rem; /* Fixed height to prevent line jumps */
+  overflow: hidden; /* Hide overflow during typing if needed */
+}
+
+
+/* Menu buttons container */
+.menu {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Buttons styling */
+.menu button {
+  background-color: transparent;
+  border: 2px solid #00ff66;
+  color: #00ff66;
+  padding: 0.8rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s, transform 0.15s;
+  border-radius: 6px;
+  width: 100%; /* Ensure buttons take full width of menu */
+  text-align: center; /* Align text inside buttons */
+}
+
+/* Buttons hover and focus */
+.menu button:hover,
+.menu button:focus {
+  background-color: #00ff66;
+  color: #000;
+  transform: scale(1.02); /* Slightly reduced scale for subtler effect */
+  outline: none;
+}
+
+/* Blinking cursor */
+.blink-cursor {
+  display: inline-block;
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  from, to {
+    color: transparent;
+  }
+  50% {
+    color: #00ff66;
+  }
+}
+/* Command Input Field */
+.command-input-container {
+  display: flex;
+  align-items: baseline; /* Align prompt and input on same text baseline */
+  margin-top: 1rem; /* Space above input */
+  margin-bottom: 1rem; /* Space below input */
+}
+
+.prompt {
+  color: #00ff66; /* Green text for prompt */
+  margin-right: 0.5rem; /* Space between prompt and input */
+  font-size: 1.1rem;
+}
+
+.command-input {
+  flex-grow: 1; /* Allow input to take remaining space */
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid #00ff66; /* Underline effect */
+  color: #00ff66; /* Green text for input */
+  font-family: 'Courier New', monospace;
+  font-size: 1.1rem;
+  padding: 0 0.2rem; /* Small padding */
+  outline: none; /* Remove default focus outline */
+}
+
+/* Optional: Blinking cursor for the input field itself, if needed (browser default often has one) */
+.command-input:focus {
+  caret-color: #00ff66; /* Ensure caret is green */
+}
+
+
+/* ASCII Background Styling */
+.ascii-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  z-index: -1;
+  color: rgba(0, 255, 102, 0); /* Slightly increased alpha again, try 0.12 or 0.15 */
+  font-family: 'Courier New', monospace;
+  font-size: 14px; /* Confirm this is at least 14px, or try 16px */
+  line-height: 1; /* Keep this tight for density */
+  white-space: pre;
+}
+
+.ascii-background pre {
+  margin: 0;
+  padding: 0;
+}
+
+/* Particle Effect Canvas Styling */
+.particle-effect-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -0.5; /* Place it between ASCII background (-1) and terminal (0 or positive) */
+  pointer-events: none; /* Crucial: Allows clicks/interactions to pass through to elements below */
+}
+
+/* Add this to your existing body style if it's not there, to ensure full coverage for fixed elements */
+body {
+  /* ... existing styles ... */
+  min-height: 100vh;
+  min-width: 100vw;
+  overflow: hidden; /* Ensure body doesn't scroll with fixed backgrounds */
+}
+
+/* Also ensure your terminal container (.terminal) has a z-index higher than -0.5 (e.g., 0, 1, or default) */
+.terminal {
+  /* ... existing styles ... */
+  position: relative; /* Ensure z-index works on it */
+  z-index: 1; /* Make sure terminal is above particles */
+}
