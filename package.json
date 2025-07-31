@@ -1,8 +1,8 @@
 {
-  "name": "sokkaverse", // Adjusted name to match repo
+  "name": "sokkaverse", 
   "version": "0.0.0",
   "private": true,
-  "homepage": "https://sokkastark.github.io/sokkaverse", // <--- IMPORTANT: Matches your new repo
+  "homepage": "https://sokkastark.github.io/sokkaverse", 
   "scripts": {
     "dev": "vite",
     "build": "vite build",
