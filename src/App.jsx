@@ -1,10 +1,13 @@
-import AsciiBackground from './AsciiBackground'; // New Import
-import ParticleEffect from './ParticleEffect'; // New Import
-import './App.css';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
 
-// Typing line with optional blinking cursor
+import AsciiBackground from './components/AsciiBackground';
+import ParticleEffect from './components/ParticleEffect';
+import Spaceship from './planets/Spaceship';
+import Planets from './planets/Planets';
+
+import './App.css';
+
 const TypingLine = ({ text, speed = 45, onComplete, withCursor = false }) => {
   const [displayed, setDisplayed] = useState('');
   const [done, setDone] = useState(false);
@@ -25,14 +28,13 @@ const TypingLine = ({ text, speed = 45, onComplete, withCursor = false }) => {
   }, [text, speed, onComplete]);
 
   return (
-    <div className="terminal-line"> {/* Added a class for consistent line styling */}
+    <div className="terminal-line">
       {displayed}
       {withCursor && done && <span className="blink-cursor">|</span>}
     </div>
   );
 };
 
-// Loading bar animation [####------] style
 const TerminalLoader = ({ duration = 6, onComplete }) => {
   const [progress, setProgress] = useState(0);
   const [bar, setBar] = useState('[----------]');
@@ -58,130 +60,111 @@ const TerminalLoader = ({ duration = 6, onComplete }) => {
   }, [duration, onComplete]);
 
   return (
-    <div className="terminal-line"> {/* Added a class for consistent line styling */}
+    <div className="terminal-line">
       {`Loading multiverse gateways ${bar} ${progress}%`}
     </div>
   );
 };
 
 function App() {
-  const [step, setStep] = useState(0); // control animation sequence
-  const [command, setCommand] = useState(''); // New: state for the command input
+  const [step, setStep] = useState(0);
+  const [command, setCommand] = useState('');
+  const [terminalOutput, setTerminalOutput] = useState([]);
+  const [spaceshipDestination, setSpaceshipDestination] = useState(null);
 
-  // Define the sequence of actions/delays for better control
   useEffect(() => {
-    // This useEffect ensures the sequence triggers correctly once the component mounts
-    // and helps avoid re-triggering logic on subsequent renders.
+    let timer;
     if (step === 0) {
-      // First line
-      const timer1 = setTimeout(() => {
-        setStep(1);
-      }, "Initializing Sokkaverse OS...".length * 45 + 500); // text length * speed + small buffer
-      return () => clearTimeout(timer1);
+      timer = setTimeout(() => setStep(1), "Initializing Sokkaverse OS...".length * 45 + 500);
     } else if (step === 1) {
-      // Loader
-      const timer2 = setTimeout(() => {
-        setStep(2);
-      }, 6000); // Loader duration
-      return () => clearTimeout(timer2);
+      timer = setTimeout(() => setStep(2), 6000);
     } else if (step === 2) {
-      // Final line
-      const timer3 = setTimeout(() => {
-        setStep(3);
-      }, "System Ready. Enter a command or select an option:".length * 45 + 500);
-      return () => clearTimeout(timer3);
+      timer = setTimeout(() => setStep(3), "System Ready. Input your query / Ask anything about Sokka / Why are you here?:".length * 45 + 500);
+    } else if (step === 3) {
+      setStep(4);
     }
-  }, [step]); // Only re-run when 'step' changes
+    return () => clearTimeout(timer);
+  }, [step]);
 
-  const navigate = (page) => alert(`Portal to ${page} universe is not ready yet.`);
+  const handleCommand = (event) => {
+    if (event.key === 'Enter') {
+      const inputCommand = command.trim().toLowerCase();
 
-return (
-  <> {/* Use a Fragment to render multiple top-level elements */}
-    <AsciiBackground /> {/* New: Render the background component */}
-    <ParticleEffect /> {/* New: Render the particle component */}
+      setTerminalOutput(prevOutput => [
+        ...prevOutput,
+        `>> ${command}`,
+        `Command '${inputCommand}' received. Processing...`
+      ]);
+      setCommand('');
+    }
+  };
 
-    <motion.div
-      className="terminal"
-      initial={{ opacity: 0, scale: 0.9 }} // Initial state for fade-in
-      animate={{ opacity: 1, scale: 1 }}    // Animate to full opacity and scale
-      transition={{ duration: 0.8, ease: "easeOut" }} // Smooth transition for the container itself
-    >
-      {/* Step 0: Boot line */}
-      {step >= 0 && (
-        <TypingLine text="Initializing Sokkaverse OS..." speed={45} />
-      )}
+  const navigateToPlanet = (planetId, planetPosition) => {
+    setSpaceshipDestination(planetPosition);
+    console.log('Planet clicked:', planetId, 'at position:', planetPosition);
+  };
 
-      {/* Step 1: Loader */}
-      {step >= 1 && (
-        <TerminalLoader duration={6} />
-      )}
+  const onArrival = () => {
+    alert("Spaceship arrived!");
+    setSpaceshipDestination(null);
+  };
 
-      {/* Step 2: Final line with cursor */}
-      {step >= 2 && (
-        <>
+  return (
+    <>
+      <AsciiBackground />
+      <ParticleEffect />
+      <Planets onPlanetClick={navigateToPlanet} />
+      <Spaceship
+        destination={spaceshipDestination}
+        onArrival={onArrival}
+      />
+
+      <motion.div
+        className="terminal"
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+      >
+        {step >= 0 && (
+          <TypingLine text="Initializing Sokkaverse OS..." speed={45} />
+        )}
+
+        {step >= 1 && (
+          <TerminalLoader duration={6} />
+        )}
+
+        {step >= 2 && (
           <TypingLine
-            text="System Ready. Enter a command or select an option:"
+            text="System Ready. Input your query / Ask anything about Sokka / Why are you here?:"
             speed={45}
             withCursor={true}
           />
+        )}
+        
+        {step >= 3 && (
+          terminalOutput.map((line, index) => (
+            <TypingLine key={index} text={line} speed={10} />
+          ))
+        )}
 
-          {step >= 3 && ( // This ensures input appears after "System Ready" message
-            <motion.div
-              className="command-input-container"
-               initial={{ opacity: 0, y: 10 }} // Starts invisible and slightly below
-               animate={{ opacity: 1, y: 0 }}   // Animates to full visibility and original position
-               transition={{ duration: 0.5, delay: 0.2 }} // Smooth transition after a small delay
-              >
-              <span className="prompt">sokkaverse$&gt;</span>
-              <input
-                type="text"
-                className="command-input"
-                value={command}
-                onChange={(e) => setCommand(e.target.value)}
-                autoFocus // Automatically focus the input when it appears
-              />
-            </motion.div>
-          )}
-        </>
-      )}
-
-      {/* Step 3: Button menu */}
-      {step >= 3 && (
-        <motion.div
-          className="menu"
-          initial="hidden"
-          animate="visible"
-          variants={{
-            visible: {
-              transition: {
-                staggerChildren: 0.3,
-                delayChildren: 0.5 // Delay menu items slightly after main boot sequence
-              },
-            },
-          }}
-        >
-          {[
-            { label: 'Design Studio 🎨', key: 'design' },
-            { label: 'Cinematic Mind 🎬', key: 'film' },
-            { label: 'Soul & Logic 🌱', key: 'soul' },
-            { label: 'Learner Terminal 💻', key: 'code' },
-            { label: 'Sokka Lab 🧠', key: 'lab' },
-          ].map((btn, index) => (
-            <motion.button
-              key={btn.key}
-              onClick={() => navigate(btn.key)}
-              variants={{
-                hidden: { opacity: 0, y: 10 },
-                visible: { opacity: 1, y: 0 },
-              }}
-              // Removed individual transition delay here as staggerChildren handles it
-            >
-              {btn.label}
-            </motion.button>
-          ))}
-        </motion.div>
-      )}
-    </motion.div>
+        {step >= 3 && (
+          <motion.div
+            className="command-input-container"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}>
+            <span className="prompt">{'>>'}</span>
+            <input
+              type="text"
+              className="command-input"
+              value={command}
+              onChange={(e) => setCommand(e.target.value)}
+              onKeyDown={handleCommand}
+              autoFocus
+            />
+          </motion.div>
+        )}
+      </motion.div>
     </>
   );
 }

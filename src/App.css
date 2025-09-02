@@ -1,13 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
 /* Reset body and set background */
 body {
   margin: 0;
   font-family: 'Courier New', monospace;
-  background-color: #0d0d0d;
+  background-color: #120A1A; /* New: A deep purplish-black to match the image's background */
   color: #00ff66;
   height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
+  /* Add or modify min-height/min-width/overflow on html, body, #root as discussed before */
+  min-height: 100vh;
+  min-width: 100vw;
   overflow: hidden; /* Prevent body scroll if content temporarily overfills */
 }
 
@@ -15,9 +20,11 @@ body {
 .terminal {
   width: 90%;
   max-width: 800px;
-  min-height: 350px; /* Set a minimum height to prevent jumps */
-  background-color: #000;
+  min-height: auto; /* Set a minimum height to prevent jumps */
+  height: auto;
+  background-color: rgba(0, 0, 0, 0.7); /* Change this to control transparency */
   padding: 2rem;
+  padding-bottom: 1.5rem;
   border: 2px solid #00ff66;
   box-shadow: 0 0 20px #00ff66;
   border-radius: 12px;
@@ -31,7 +38,7 @@ body {
 
 /* Consistent styling for each animated line */
 .terminal-line {
-  margin-bottom: 1rem; /* Space between lines */
+  margin-bottom: 0.8rem; /* Space between lines */
   font-size: 1.1rem;
   white-space: pre-wrap; /* Preserve whitespace and allow wrapping */
   height: 1.1rem; /* Fixed height to prevent line jumps */
@@ -89,7 +96,7 @@ body {
   display: flex;
   align-items: baseline; /* Align prompt and input on same text baseline */
   margin-top: 1rem; /* Space above input */
-  margin-bottom: 1rem; /* Space below input */
+  margin-bottom: 0.5rem; /* Space below input */
 }
 
 .prompt {
@@ -126,6 +133,7 @@ body {
   overflow: hidden;
   z-index: -1;
   color: rgba(0, 255, 102, 0); /* Slightly increased alpha again, try 0.12 or 0.15 */
+  background-color: #120A1A; /* NEW: Use your desired background color here */
   font-family: 'Courier New', monospace;
   font-size: 14px; /* Confirm this is at least 14px, or try 16px */
   line-height: 1; /* Keep this tight for density */
@@ -161,4 +169,130 @@ body {
   /* ... existing styles ... */
   position: relative; /* Ensure z-index works on it */
   z-index: 1; /* Make sure terminal is above particles */
+}
+
+
+
+/* Planets Container */
+.planets-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none; /* Crucial: Allows clicks through to terminal unless directly on planet */
+  z-index: -0.3; /* Above spaceship, below terminal */
+}
+
+/* Individual Planet Styling */
+.planet {
+  position: absolute; /* Allows precise positioning */
+  display: flex;
+  flex-direction: column; /* Stacks children vertically (image on top, label on bottom) */
+  align-items: center; /* Horizontally centers children */
+  justify-content: flex-start; /* Aligns items to the top to prevent a large gap */
+
+  /* Set a fixed size for the *container* of the planet */
+  width: 50px;
+  height: 50px;
+
+  /* This is crucial for z-index to work on children */
+  position: relative; /* Add this if it's not there */
+  z-index: 1;       /* Ensure the planet container is above the background, but below the terminal */
+
+  /* The glow comes from the box-shadow, which is fine */
+  box-shadow: 0 0 10px rgba(0, 255, 102, 0.3);
+  border-radius: 50%;
+  overflow: visible; /* Let the label appear outside the circle if needed */
+}
+
+
+
+/* Existing terminal CSS (just a reminder to ensure its z-index is highest) */
+.terminal {
+  position: relative;
+  z-index: 1; /* Make sure terminal is still on top */
+  /* ... rest of terminal styles ... */
+}
+/* Individual Planet Styling */
+.planet {
+  position: absolute;
+  /* Remove: width: 100px; height: 100px;  PixelArt will define overall size */
+  /* Remove: border-radius: 50%; */
+  /* Remove: background-color: (will be passed to PixelArt); */
+
+  display: flex;
+  flex-direction: column; /* Stack pixel art and label */
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  cursor: pointer;
+  user-select: none;
+  pointer-events: auto;
+  border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border */
+  box-shadow: 0 0 10px rgba(0, 255, 102, 0.3); /* Subtle initial glow (will use planet.color for this) */
+  padding: 5px; /* Add some padding around the pixel art and label */
+}
+
+/* Update planet-label for visibility and stacking */
+.planet-label {
+  /* Position the label below the image */
+  position: absolute;
+  bottom: -20px; /* Adjust this value to control the distance from the bottom of the planet image */
+  left: 50%;
+  transform: translateX(-50%);
+
+  /* Make sure the label is on top of everything inside the planet container */
+  z-index: 2; /* NEW: Ensure label is on top of the image */
+
+  /* Make the font easily visible */
+  font-size: 0.35rem;
+  color: #323231; /* Use a temporary bright color for visibility */
+  text-shadow: 0 0 5px #000;
+  white-space: nowrap;
+  font-family: 'Press Start 2P', 'Courier New', monospace;
+}
+
+/* Styles for the pixel art containers if needed, but PixelArt.jsx styles them inline */
+.pixel-art-container {
+  line-height: 0;
+  /* Any specific styles for the overall pixel art wrapper */
+}
+/* Individual pixel styles are handled inline by PixelArt.jsx */
+/* New: Styling for the planet images themselves */
+.planet-image {
+  width: 150%;
+  height: 150%;
+  object-fit: contain;
+  display: block;
+  image-rendering: pixelated;
+  z-index: 1; /* Keep z-index on the image, but it will be below the label now */
+}
+
+/* Spaceship Container Styling */
+.spaceship-container {
+  position: fixed;
+  bottom: 20px; /* Distance from the bottom of the screen */
+  right: 20px; /* Distance from the right of the screen */
+  z-index: 10; /* Keep it on top of everything */
+  cursor: pointer;
+}
+
+/* Spaceship Image Styling */
+.spaceship-image {
+  width: 30px; /* Set a fixed size for the spaceship image */
+  height: auto; /* Maintain aspect ratio */
+  image-rendering: pixelated; /* Keep pixels sharp */
+}
+
+/* Fire Effect Styling */
+.fire-effect {
+  position: absolute;
+  top: 100%; /* Position it below the spaceship image */
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.5rem;
+  pointer-events: none; /* Crucial: allows clicks to pass through */
+  color: orange;
+  text-shadow: 0 0 10px orange;
 }

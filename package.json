@@ -1,6 +1,7 @@
 {
   "name": "sokkaverse", 
   "version": "0.0.0",
+   "type": "module",
   "private": true,
   "homepage": "https://sokkastark.github.io/sokkaverse", 
   "scripts": {
