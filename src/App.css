@@ -271,27 +271,45 @@ body {
 
 /* Spaceship Container Styling */
 .spaceship-container {
-  position: fixed;
-  bottom: 20px; /* Distance from the bottom of the screen */
-  right: 20px; /* Distance from the right of the screen */
-  z-index: 10; /* Keep it on top of everything */
+  position: absolute; /* changed from fixed */
+  left: 0;
+  top: 0;
+  z-index: 10;
   cursor: pointer;
+  width: 30px;
+  height: auto;
 }
 
 /* Spaceship Image Styling */
 .spaceship-image {
-  width: 30px; /* Set a fixed size for the spaceship image */
-  height: auto; /* Maintain aspect ratio */
-  image-rendering: pixelated; /* Keep pixels sharp */
+  width: 30px;
+  height: auto;
+  image-rendering: pixelated;
+  transform-origin: center center; /* ✅ ensure rotation happens around center */
+}
+
+
+/* Fire Effect Styling */
+.fire-effect1 {
+  position: absolute;
+  top: 80%; /* Position it below the spaceship image */
+  left: 10%;
+  rotate: 180deg;
+  transform: translateX(-50%);
+  font-size: 0.5rem;
+  pointer-events: none; /* Crucial: allows clicks to pass through */
+  color: orange;
+  text-shadow: 0 0 10px orange;
 }
 
 /* Fire Effect Styling */
-.fire-effect {
+.fire-effect2 {
   position: absolute;
-  top: 100%; /* Position it below the spaceship image */
+  top: 80%; /* Position it below the spaceship image */
   left: 50%;
+  rotate: 180deg;
   transform: translateX(-50%);
-  font-size: 1.5rem;
+  font-size: 0.5rem;
   pointer-events: none; /* Crucial: allows clicks to pass through */
   color: orange;
   text-shadow: 0 0 10px orange;
