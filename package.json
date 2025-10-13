@@ -1,9 +1,9 @@
 {
-  "name": "sokkaverse", 
+  "name": "sokkaverse",
   "version": "0.0.0",
-   "type": "module",
+  "type": "module",
   "private": true,
-  "homepage": "https://sokkastark.github.io/sokkaverse", 
+  "homepage": "https://sokkastark.github.io/sokkaverse",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -13,7 +13,8 @@
   "dependencies": {
     "framer-motion": "^11.2.11",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^7.9.4"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.2.1",
