@@ -614,3 +614,329 @@ body {
     color: #999;
     overflow: hidden; /* To hold images without scrolling */
 }
+
+/* ========================================================== */
+/* CINEMATIC MIND STYLES (The Director's Cut) */
+/* ========================================================== */
+
+/* Main Full-Screen Container */
+.cinematic-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #0A0A0A; /* Deep dark background */
+    color: #E0E0E0; /* Light text color */
+    font-family: 'Arial', sans-serif;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; /* Push content to the bottom */
+}
+
+/* Main Viewport Area */
+.cinematic-viewport {
+    flex-grow: 1; /* Takes up most of the screen */
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-color: #1A1A1A; /* Slightly lighter for content area */
+}
+
+/* Content Area Styling */
+.content-area h1 {
+    font-size: 2.5rem;
+    color: #FFC300; /* Subtle gold/yellow highlight */
+    margin-bottom: 10px;
+    font-weight: 300;
+}
+
+.content-area .note {
+    font-style: italic;
+    color: #666;
+}
+
+/* --- Director's Notes Overlay --- */
+.director-notes {
+    position: absolute;
+    top: 50px;
+    left: 50px;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 15px 20px;
+    border-left: 3px solid #FFC300;
+    color: #B0B0B0;
+    font-size: 0.9rem;
+    max-width: 300px;
+    z-index: 10;
+}
+
+.note-label {
+    color: #FFC300;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+.note-text {
+    margin: 0;
+    line-height: 1.4;
+}
+
+/* --- Film Strip Menu (Horizontal Navigation) --- */
+.film-strip-menu {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    background-color: #000;
+    border-top: 1px solid #333;
+    padding: 10px 0;
+    z-index: 20;
+}
+
+.film-strip-item {
+    background: none;
+    border: none;
+    color: #999;
+    padding: 10px 20px;
+    margin: 0 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: color 0.2s, background-color 0.2s;
+    white-space: nowrap;
+    position: relative;
+    overflow: hidden;
+}
+
+.film-strip-item:hover {
+    color: #FFF;
+}
+
+.film-strip-item.active {
+    color: #FFC300; /* Active highlight color */
+    background-color: rgba(255, 195, 0, 0.1);
+}
+
+/* Add a visual filmstrip line effect */
+.film-strip-item.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: #FFC300;
+}
+
+
+/* --- Back Button --- */
+.cinematic-back-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    padding: 10px 15px;
+    background-color: #333;
+    color: #FFC300;
+    border: 1px solid #FFC300;
+    cursor: pointer;
+    font-size: 0.9rem;
+    z-index: 20;
+    transition: background-color 0.2s;
+}
+
+.cinematic-back-btn:hover {
+    background-color: #444;
+}
+
+/* ========================================================== */
+/* FILM STRIP GALLERY STYLES */
+/* ========================================================== */
+
+/* Main Container: Enables horizontal scrolling */
+.film-reel-container {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    padding: 30px 0; /* Vertical padding to give space for sprockets */
+    position: relative;
+    z-index: 10;
+    cursor: grab;
+}
+
+/* Inner Container: Holds the frames */
+.film-strip-inner {
+    display: inline-flex; /* Keeps frames horizontal */
+    padding: 20px 0; /* Padding inside the reel */
+}
+
+/* The Film Strip Effect (Top and Bottom Sprockets) */
+.film-reel-container::before,
+.film-reel-container::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 15px; /* Height of the sprocket area */
+    background: repeating-linear-gradient(
+        90deg, 
+        #000, 
+        #000 15px, 
+        #1A1A1A 15px, 
+        #1A1A1A 40px /* Adjust length of sprockets and gaps */
+    );
+    z-index: 5;
+    border-top: 1px solid #333;
+    border-bottom: 1px solid #333;
+}
+
+.film-reel-container::before {
+    top: 0;
+}
+
+.film-reel-container::after {
+    bottom: 0;
+}
+
+/* Individual Frame Styling */
+.film-frame {
+    width: 200px; /* Fixed width for each frame */
+    height: 150px;
+    margin: 0 5px;
+    background-color: #222;
+    border: 5px solid #000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 10;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.frame-image-box {
+    width: 90%;
+    height: 70%;
+    background-color: #333;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: #FFC300;
+}
+
+.frame-label {
+    font-size: 0.8rem;
+    color: #FFC300;
+    text-align: center;
+}
+
+/* Update general content area styling for better display */
+.cinematic-viewport .section-title {
+    font-size: 2.5rem;
+    color: #FFC300;
+    margin-bottom: 5px;
+    font-weight: 300;
+}
+
+.cinematic-viewport .section-subtitle {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 40px;
+}
+
+/* ========================================================== */
+/* SOUL & LOGIC STYLES (The Digital Garden) */
+/* ========================================================== */
+
+/* Main Container: Controls the overall Day/Night theme */
+.garden-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Sky Orb (Sun/Moon) Styling - Pixel Art Circles */
+.sky-orb {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    z-index: 5;
+    /* Framer Motion now handles position, but this style ensures the anchor point is correct */
+    transform: translate(-50%, -50%); 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Ambient shadow */
+    transition: background-color 2s ease;
+}
+
+.sky-orb.sun {
+    background: #FFC300; /* Yellow/Gold for Sun */
+}
+
+.sky-orb.moon {
+    background: #F0F0F0; /* Pale Gray/White for Moon */
+}
+
+/* Ground Layer (Pixelated Look) */
+.ground-layer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 20vh;
+    z-index: 10;
+    background: #4C9A2A; 
+    
+    /* Pixel Art Effect - creating a jagged top edge using clip-path */
+    clip-path: polygon(
+        0% 20%, 5% 10%, 10% 30%, 15% 15%, 20% 40%, 25% 25%, 30% 50%, 35% 35%, 
+        40% 60%, 45% 45%, 50% 70%, 55% 55%, 60% 80%, 65% 65%, 70% 90%, 75% 75%, 
+        80% 100%, 100% 100%, 100% 100%, 0% 100%
+    );
+    transition: background-color 2s ease;
+}
+
+
+/* General Content Area */
+.garden-content {
+    z-index: 15;
+    text-align: center;
+    padding-bottom: 20vh;
+    font-family: 'Press Start 2P', monospace;
+    transition: color 2s ease; /* Smooth text color change */
+}
+
+.garden-content h1 {
+    font-size: 2rem;
+    color: inherit;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); 
+}
+
+/* Back Button Styling (High visibility) */
+.garden-back-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    padding: 10px 15px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: inherit;
+    border: 2px solid;
+    cursor: pointer;
+    font-size: 0.9rem;
+    z-index: 20;
+    transition: all 0.2s;
+}
+
+.garden-back-btn:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
